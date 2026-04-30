@@ -1,2 +1,2 @@
-# ece-ta-applications
+# ECE-TA-Applications
 ECE TA Application Pages
