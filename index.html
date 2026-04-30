@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECE Teaching Assistant Applications</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0d1117;
+    --surface:   #161b22;
+    --border:    #30363d;
+    --accent:    #cc0000;
+    --accent2:   #e05a00;
+    --text:      #e6edf3;
+    --muted:     #8b949e;
+    --radius:    6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 1rem;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(204,0,0,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(204,0,0,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    width: 100%;
+  }
+
+  /* ── logo bar ── */
+  .logo-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.75rem;
+    margin-bottom: 2rem;
+  }
+  .logo-bar .ece-logo {
+    height: 48px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+  .logo-bar .logo-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .logo-bar .asia-logo {
+    height: 52px;
+    width: auto;
+    /* The icon has a red building on black — invert to white on transparent */
+    filter: brightness(0) invert(1);
+  }
+
+  /* ── header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .header h1 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: .5rem;
+  }
+  .header h1 span { color: var(--accent); }
+
+  .header .semester-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent2);
+    border: 1px solid rgba(224,90,0,.5);
+    border-radius: 4px;
+    padding: .25rem .8rem;
+    margin-bottom: .75rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: .9rem;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* ── deadline box ── */
+  .deadline-box {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-bottom: 2rem;
+    background: rgba(224,90,0,.08);
+    border: 1px solid rgba(224,90,0,.4);
+    border-radius: var(--radius);
+    padding: .75rem 1rem;
+  }
+  .deadline-box .dl-icon { font-size: 1.1rem; line-height: 1.5; flex-shrink: 0; }
+  .deadline-box .dl-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .8rem;
+    color: var(--accent2);
+    line-height: 1.5;
+  }
+  .deadline-box .dl-text strong {
+    display: block;
+    font-size: .85rem;
+    color: #f0a060;
+    margin-bottom: .1rem;
+  }
+
+  /* ── course cards ── */
+  .card-link {
+    display: block;
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 1rem;
+    transition: border-color .2s, transform .15s, box-shadow .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-link::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    border-radius: var(--radius) 0 0 var(--radius);
+  }
+  .card-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(0,0,0,.4);
+  }
+  .card-link .course-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .78rem;
+    color: var(--accent);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    display: block;
+  }
+  .card-link h2 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: .4rem;
+  }
+  .card-link p { font-size: .88rem; color: var(--muted); margin-bottom: 0; }
+  .card-link .arrow {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: var(--border);
+    transition: color .2s, right .15s;
+  }
+  .card-link:hover .arrow { color: var(--accent); right: 1.25rem; }
+
+  /* ── footer ── */
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .footer-inst {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .72rem;
+    color: var(--muted);
+    margin-bottom: .6rem;
+  }
+  .footer-contact {
+    font-size: .82rem;
+    color: var(--muted);
+  }
+  .footer-contact a {
+    color: var(--accent2);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(224,90,0,.35);
+    transition: color .2s, border-color .2s;
+  }
+  .footer-contact a:hover {
+    color: #f0a060;
+    border-color: #f0a060;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- logos -->
+  <div class="logo-bar">
+    <img class="ece-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYMAAABkCAYAAABkUlycAAAACXBIWXMAAC4jAAAuIwF4pT92AAAKO0lEQVR4nO3dTW4byRXA8XKQbQBiLiDmBKFPYOoEYk5AeeedrE2QTUAJ3gTZUN5lZ+kEkk5AGpi95ROYc4LwBgpq8N7gTU19Ndnd/Pr/AMIy2V1dXV3dr6q6WXzz808jh/337dOH2kUXzrlxt7k5SufOueWWaby2lJdT86ZyuRvn3KzjvByjWym7rD/1kxcAwD778wG2Il+cc+vCMoe2Tyt5Jb3913+b9A4AoHEw8MMKx9adXxxjNw4AusIwEQCAYAAAIBgAAAgGAACPYAAAIBgAAAgGAACCAQDAIxgAAAgGAACCAQCAYAAA0InqAOveOfeLOz3ZWWN7nLAQ3fETXH51p2dZsxDBAKGHFn7kBZth5tpu+UBAGScwTAQAIBgAAAgGAACCAQDAIxgAAAgGAACCAQCAYAAA8AgGAACCAQCAYAAAkLmJSpNjnTnnLvdoIqmaCcUObZ+YCwjAzoNBaeKmcY8XzrYmkjq6ffr26YM7Iq/uMPlGBhOdIcfXj5k7PEuGiQAA3DM4BEfWKwCwhwgGAACCwb6jVwCgDwQDAADBYJ/RKwDQF4IBAIBgAAAgGAAACAYAAI9gAAAgGAAACAYAAIIBAMAjGAAAfv09A6Bv5+4w1fywEk7b/YH+WNWaYIBdOMSTBahtMBxko4FhIgAAwQAAQDAAABAMAAAewQAAQDAAABAMAAAEAwCARzAAABAMAAAEAwAAwQAA4BEMAAAEAwAAv2eAP5r7uc3d6bl2zr3sOA8Ld5r6+n2LqXPunTs9D/I7C1kEA4RG7jQNdp0B59x41xk4ckN5nZqvNQvtWzDwUfumh+2c9bANADgY+xYMfMuI1hEA9IwbyAAAggEAgGAAACAYAAA8ggEAgGAAACAYAAAqg8EpTk0AACelJhj4+Vre95CXY+TL7m7XmQCAtoaJ/CRHBITmgeB8057Vt08f2s8RALRwz4CA0FMgAIB9v4FMQOghENArAHAIE9XpvNhfWs7LMdiHHsFD7ZS1+J1VC2nctpAG0pa7zsAxl9ums5YSEPYzELiaH7FAZ/qYfv3UL2oEhD2cwpqAsH+BAB26+8+/f/v74z/+udO8AG3W5zZ+z4CAQCA4iRMl9jkBoX0E3N3V7zc//9TKrxxenmhA6CwQcBN5fwOBxQWr23KnfPur220Fg1MMCJ0/WbVpQEgdcH9i6Wepk6z2hIy14HIVLbZMmG5t3pp+XlovtuymUtuu3X6TdXP7tUk516RnP7PvlY59rk6G+U0tE8tPLq1N9i+3j7H/l5Zrsq+57dZsq7R+qW63GQxOKSD08ojt9C/djzzVnIz7atO8NwmEXdmHPBySQ66nh6LtYHAKASEXCHxhTuTvJxlG2utgcMqatJq6zgMXORxjMDjmgJALBP6xwql51vxq23mdCAYA+rLt00Sn9JRRLhCMJRB8ds7N5IbyZwkIE+kl9GkoL+tF8jWQHswysy/WOtHD0XQ03di6sTR0vVi6pbxpyyXV4xoH+VFDSbtJTy2Xl1g+UstrmcTyVZuH1LrDzBfmcuumylHzuqwsWz2OK/nbbzNmafJjrYK8axo1ZZWrp1r/Y8cilfYgUV5h3alNuyZ/VrjdJsdiHCnLUp3/Qx3o8vcMjmnqitK+jOXiP5BvAD/LwfDvXbj+ac9sbF4DUwkWmXUXEth0vfAE9sHtm3NuLp9/MUNjus5U0gnT8H//T/69kr/tF7VieRvINr7Jdnzaj5F8T+T9WaI8fH6bmEl6um/WXPI5zOTd7+OrHH8tpx+Sl5JcGdvPZ/L6Ecmn5mceKU9N23qVsr2Q9MLPF5G6MDf7MzLHO6xDNj+2Ttry07zq+j8iF8zaenopn08q9uEmKOvHYL2w7tSmXcpf6vyMHYtFxbYeK+r8SJbTc+nKrtdVz+CYegi1QU1bR1M5sO8lcu8iGGh+Nv1G7EOiRTKRCnaeaI3q9sZSGVPb1/c/S8W8z0wHsZDgWjoGF5KOz+O1295E0rtI9OxWUhZ/L6Rj86IXxHWmt1gq45GcT+emVWfTtcftRdKzZTfJtBb1uN/KcfnaoFdrv/k+y9ShXJ38Kp/fmMCeO+6pbTjZx7l8nuplaAA4b9hrq0m7lL/S+Rkei8uK2QU+ZqbMH0oduU6l08cvnR1yD6FJIPBBQA+iP4Dv5L1jmidoLpWpjXl8XDB0FKOtzpqgNjG9s21vhI3MsYz1DJwEKG0NN9lfHT7ctIxnUi/tBf1F3gvT1SEcuw9TyXuqzO16ndxQrPS9kMcSDYz+Apm6OH6UYL5uOe026bEolYUOUaeWm0lgTwaUrnsGSivvNgd3F2rnQXmSE3EgB+XFdL/aaKVuYhBcqJqMWY8iY50jOYHavP9xKRU91VK9kAtXycScNE9ywdvmSa6pHHsts9R9n1tppf+1QdrLxFCWqyzjcaI38hwMJwxNQNPezVC2cZvJgzMB1dflttk6GY5z2+1fVGw/Vk+tWxlmifU8ddx904bNbSbtmvzVnp8jeZUapVr354llx6VrUV/BwG37mOWeW0tXc26CwosU/q4eCQor26pBXv5mAveqg0CuF62hlFtK7TbtUM6zaV1vyg41PWWGiu4lcNy0NIFazf7WlslQeqUafN6boJY6F3WMeyr71sWDD7ZOLoML6VR61EMJYvcb1FNrZQJ2WM+GkZvhc/lbz92cXNo1+Sudn3P5/1COXU3QupYA5cvOFfZ3boKVX++lz2Bw7NZtDoe18Fhp2/cMVqZSbTtMdC4nw6Jwb8Fv56wivYksu5B0tQW8SQNEW+dX8tKnMlLH9lZ6gbXbyuWrpoxXiRurw0S62uIcSVDLNVC+m59q7aoRUxonvzE3P++2GJNXd3Icx5mhXTu1zI0EpBqptNu4Z3At636RbdQEZn2KcRYZng7rzbW5WT3o654BjuP7BSupnDVPw9RYy4XUnpAhHbMfVAwRvZWT+a2cOKmx/hJtFZ/LS4eAUif80vQealxlhj9qyvghUWZ6LyBGh85SAUO9ZG6KLiNBKPaIZRt06GXTY2it5cI3CwLsU6R13lbabbqOPHmVcyPLnlXWm98QDNC0Yl6ZCmdb0pvQC8ywcKG1j/KFJ/C7SKvpeYunuMaRi2rpYq8nbI4+Dqo3ezct4zvzuO0g+PsuGKKwF4KPkXJqciHUFufYbDN8eqlNywYt9BIt70HkQv4owXcg75+1kHab9F5Dk2OlQ4KW1ptHMzz0u/OOYHCcvQJtpSzMS1ubegLbz+zzyDrGbD9XL9JSXptlJpGLeeoiEb6/lpNpmFnvvZy09rl5e2LodzusJ/MFu1J5WIPEY58Pwcke3njUXs4yckNPnwEfyX6UHkUtlbH2gr5LWcxlSMC/t470MjTNp6BHEvYASo9JPsmxmEog+J4ZK4+lVap3YZmWHhzI1dPY/YNfx8WDfGkPcCjHyKfxS1BOYVq1aZfyl6uPYfmF9a907JaRJ870vuazNDYWkr9bXe7N66sfMgIAnDJ6BgAAggEAOLj/A/qXUiotGaWOAAAAAElFTkSuQmCC" alt="ECE Logo">
+    <div class="logo-divider"></div>
+    <img class="asia-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK0AAABpCAYAAABI1qPhAAADNElEQVR4nO3dTW7bQAyGYTvIQdozJMvcPl32Dj2Ku3IgGJItjUgOP/J9tkUAjebFZPQT9Xq73S7d/Pn9+TPor39/rzOPZVSFMYy6dop2OdFLSpNeYQxnvc0+AOAoooUcooWc99kHkMHWPhE5tVlpq4dZfXxLLaLtMqFdxtkiWtRSPtouq89dh/GWjrbDBK6pPu6y0VafuFcqj7/kY9zKEzai2iPeUtES67ZK4ZbZHhDsc5XOj/xKW2kyoqivutLREuw5qvFKRkusdhTDlYmWUP2pBJw6WkKdK2vEKaIlTh0ZQg6Jlij7iIi6zH1a9BG6PWDFrS1q6xC+pyXceqL3uVMvxAhY26yLMu4e4JA2dw/2It68MsR6lyraJQKeL1OoS2mjfUTE/rJG+kgm2i3EfJxKnFvko0U/PBGDnBLf8nq1RVj7dbhnW/H4c55bkZFjtBqXGlZayCFayCFayCFayCFayOE+LeSw0kIO0UKO9MMF3jsYp/yAQXJPS6x2FOOVipZYfakEnDpaIp0nc8CpoiXSvDJFzBdmYIovzAAr+MIMTERuH0JX2kz7Ithp84UZVl19fGEGEjL8tkwR7RIB55Mh1KV00W4hZn/Z4twiEy1wx31ayCFayJF9n3b0oxSeP3dW9PGq7GEfsdJCDtFCDtFCDtFCTroLsbULCNULBkUK5z/dwwWFk1aZwvlnewA5RAs56fa0a3hZBkustJBDtJBDtJDD/0KOITNvg01baQlW28z5mxItwdYwax7DoyXYWmbMZ2i0BFtT9LyGRUuwtUXOL19NNDbrT3WyiLir4P4Yt8uEPZus+791ORfeXFfaDpM0srJUPy/eq63bnrb6xFwu45OT7f1Ua95z7xItwcKzAfNoOwRroUP0Xi2YRtsl2A7BWfFogre8JuoSv3W4ZtF2WWUxxrIPk2gJFntYdXI6WoLFERa9nIqWYDHibDfD0RIszjjTz1C0BAsLox0djpZgYWmkp0PREiw8HO1qd7QEC09H+toVLcEiwt7OXkZLsIi0p7en0RIsZnjV3Wa0BIuZnvW3Gi3BIoOtDq/fvz4IFFJ4nxZyiBZyiBZyiBZyiBZy/gN2JNFs6D9JnwAAAABJRU5ErkJggg==" alt="Asia Logo">
+  </div>
+
+  <!-- header -->
+  <div class="header">
+    <h1><span>ECE</span> Teaching Assistant Applications</h1>
+    <span class="semester-tag">Fall 2026</span>
+    <p>Select the course below for which you would like to apply for a Teaching Assistant position.</p>
+  </div>
+
+  <!-- deadline -->
+  <div class="deadline-box">
+    <span class="dl-icon">⏱</span>
+    <div class="dl-text">
+      <strong>Application Deadline for Fall 2026</strong>
+      <strong style="color:#f0a060;display:inline">Wednesday, May 24th at 11:59 pm</strong> — Applications received after this time will not be considered.
+    </div>
+  </div>
+
+  <!-- ECE 2280/2285 first (lower course number) -->
+  <a class="card-link" href="ECE2280_2285_TA_App.html" target="_blank">
+    <span class="course-tag">Circuits &amp; Systems</span>
+    <h2>ECE 2280/2285 — TA Application</h2>
+    <p>Circuits and Systems II (ECE 2280) with Lab (ECE 2285).</p>
+    <span class="arrow">→</span>
+  </a>
+
+  <!-- ECE 3610 second -->
+  <a class="card-link" href="ECE3610_TA_App.html" target="_blank">
+    <span class="course-tag">Robotics &amp; Artificial Intelligence</span>
+    <h2>ECE 3610 — TA Application</h2>
+    <p>Fundamentals of Robotics and Artificial Intelligence.</p>
+    <span class="arrow">→</span>
+  </a>
+
+  <!-- footer -->
+  <div class="footer">
+    <p class="footer-inst">University of Utah Asia Campus — Electrical &amp; Computer Engineering</p>
+    <p class="footer-contact">Questions? Email <a href="mailto:evan.benoit@utah.edu">evan.benoit@utah.edu</a></p>
+  </div>
+
+</div>
+</body>
+</html>
